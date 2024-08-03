@@ -19,51 +19,63 @@ This stack provides a robust foundation for building AI-powered applications wit
 - **Real-time Language Translation:** Seamlessly translate text between various languages using LibreTranslate.
 - **Customizable and Extensible:** Tailor the stack to your specific needs by leveraging the flexibility of Docker Compose.
 
-### Requirements
+## Requirements
 
-- Docker
-- Docker Compose
-- NVIDIA GPU (recommended for optimal performance)
+- **Docker:** Install and configure Docker for your operating system from [https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/)
+- **Docker Compose:** Install Docker Compose: [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/)
+- **NVIDIA GPU (Recommended):** For optimal performance, especially with LLMs, a dedicated NVIDIA GPU is strongly recommended.
+    - Install the **NVIDIA Container Toolkit:**  [https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html)
 
-### Installation
+## Installation & Setup
 
-1. Clone this repository:
+1. **Clone the Repository:**
    ```bash
    git clone https://github.com/your-username/ai-stack.git
    cd ai-stack
    ```
-2. Create a `.env` file based on `.env.example`, updating the values as needed.
-3. (Optional) Adjust the configurations in `compose.yaml` to your preferences.
-4. Start the stack:
+
+2. **Configure Environment Variables:**
+   - Create a `.env` file by copying the example:
+     ```bash
+     cp .env.example .env
+     ```
+   - **Edit `.env`:** 
+      - Update database credentials (`DB_USER`, `DB_PASS`).
+      - Set `WHISHPER_HOST` (e.g., `http://your-domain.com` or your server's IP address if hosting remotely).
+      - (Optional) Modify other settings like `LT_LOAD_ONLY` to pre-load specific languages for LibreTranslate.
+
+3. **Prepare Data Directories:** 
+    - Create directories for persistent data (these will be mounted as volumes):
+        ```bash
+        mkdir -p ollama_data open-webui_data searxng_data mongo_data mongo_logs libretranslate_data libretranslate_cache whisper_uploads whisper_logs whisper_models
+        ```
+    - Set appropriate ownership for the directories:
+       ```bash
+       sudo chown -R $UID:$GID ./ollama_data ./open-webui_data ./searxng_data ./mongo_data ./mongo_logs ./libretranslate_data ./libretranslate_cache ./whisper_uploads ./whisper_logs ./whisper_models
+       ```
+
+4. **Start the Stack:**
    ```bash
    docker-compose up -d
    ```
 
-### Usage
+## Usage
 
 Once the stack is running:
 
-- Access Ollama's API at `http://localhost:11434`.
-- Access Open-WebUI at `http://localhost:8080`.
-- Access SearxNG at `http://localhost:8081`.
-- Upload audio files for transcription through Whisper's interface.
-- Utilize LibreTranslate's API for language translation.
+- **Ollama API:**  `http://localhost:11434`
+- **Open-WebUI:** `http://localhost:8080`
+- **SearxNG:** `http://localhost:8081` 
+- **Whisper:**  Upload audio files for transcription through the Open-WebUI interface. 
 
-### Configuration
+## Customization
 
-- Customize the services and their settings by modifying the `compose.yaml` file.
-- Adjust environment variables in the `.env` file to modify application behavior.
-- Refer to the official documentation of each component for detailed configuration options:
-  - [Ollama](https://github.com/ollama-ai/ollama)
-  - [Open-WebUI](https://github.com/open-webui/open-webui)
-  - [SearxNG](https://github.com/searxng/searxng)
-  - [Whisper](https://github.com/openai/whisper)
-  - [LibreTranslate](https://github.com/LibreTranslate/LibreTranslate)
+- **`docker-compose.yaml`:** Modify service configurations, ports, resource limits, and more.
+- **`.env` File:** Adjust environment variables to fine-tune application behavior.
+- **Dockerfiles:** (Optional) Customize individual service configurations further if needed.
 
-### Contributing
+## Troubleshooting
 
-Contributions are welcome! If you find any issues or have suggestions for improvements, feel free to open an issue or a pull request.
-
-### License
-
-This project is licensed under the MIT License.
+- **Logs:** Use `docker-compose logs -f <service_name>` to view logs from specific services.
+- **Inspect:** Use `docker inspect <container_name>` to get detailed information about a container.
+- **Restart:** If you encounter issues
