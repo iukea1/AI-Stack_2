@@ -79,3 +79,5 @@ Once the stack is running:
 - **Logs:** Use `docker-compose logs -f <service_name>` to view logs from specific services.
 - **Inspect:** Use `docker inspect <container_name>` to get detailed information about a container.
 - **Restart:** If you encounter issues
+
+Run mkdir -p ollama_data open-webui_data searxng_data mongo_data mongo_logs libretranslate_data libretranslate_cache whisper_uploads whisper_logs whisper_models
