@@ -161,7 +161,22 @@ services:
               capabilities: [gpu]
     ports:
       - "8000:80"
-
+      
+  pipelines:
+    image: ghcr.io/open-webui/pipelines:main
+    restart: always
+    ports:
+      - "9099:9099"
+    environment:
+      PIPELINES_URLS: "https://github.com/open-webui/pipelines/blob/main/examples/filters/detoxify_filter_pipeline.py"
+      PUID: 1000
+      PGID: 1000
+    volumes:
+      - pipelines:/app/pipelines
+    networks:
+      - ai-stack
+    depends_on:
+      - open-webui
 networks:
   ai-stack:
     external: true
