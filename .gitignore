@@ -1,3 +1,5 @@
 Ollama/*
 open-webui/*
 searxng/*
+#igonore environment variables
+env/*
